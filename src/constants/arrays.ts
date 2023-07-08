@@ -1,0 +1,1 @@
+export const dashboardColumn = ["Todo", "In progress", "In tests"]

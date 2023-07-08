@@ -22,7 +22,7 @@ const ProjectsList = () => {
   }, []);
   return (
     <div className="p-5">
-        <Button onClick={() => router.push('/project/add')}>New project</Button>
+        <Button onClick={() => router.push('/project/add')}>Add new project</Button>
       {loading ? <Loading /> : <Projects projects={projects} />}
     </div>
   );

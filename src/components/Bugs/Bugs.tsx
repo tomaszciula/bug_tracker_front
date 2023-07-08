@@ -1,19 +1,21 @@
 import { button } from "@material-tailwind/react";
 import React from "react";
+import Bug from "./Bug";
 const Bugs = (props: any) => {
   console.log("BUGS: ", props.bugs);
   return (
-    <div>
+    <div className="w-full">
       {Array.isArray(props.bugs)
         ? props.bugs.map((bug: any) => {
             console.log("map");
             return (
-                <li
+              
+                <tbody
                   key={bug.id}
-                  className="px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out"
+                  className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900"
                 >
-                  {bug.comment}
-                </li>
+                  <Bug bug={bug}/>
+                </tbody>
             );
           })
         : null}

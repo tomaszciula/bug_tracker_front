@@ -1,16 +1,15 @@
 import useUser from "@/hooks/useUser";
-import axios from "axios";
 import Image from "next/image";
 import React from "react";
 
 const Sidebar = (props: { setSidebarState: (arg0: string) => void }) => {
   const user = useUser();
   console.log("USER: ", user)
-  async function getUser() {
-    const user1 = await axios.get('http://localhost:8000/user');
-  console.log("user1: ", user1.data)
-  }
-  getUser()
+  // async function getUser() {
+  //   const user1 = await fetch(`${process.env.API_URL}/user`)
+  // console.log("user1: ", user1)
+  // }
+  // getUser()
   return (
     <>
       <div
@@ -55,10 +54,11 @@ const Sidebar = (props: { setSidebarState: (arg0: string) => void }) => {
                 className="w-10 md:w-16 rounded-full mx-auto"
                 width={50}
                 height={50}
+                priority={true}
               />
               <div>
                 <h2 className="font-medium text-xs md:text-sm text-center text-teal-500">
-                  Eduard Pantazi
+                  {user.userIdentifier}
                 </h2>
                 <p className="text-xs text-gray-500 text-center">
                   Administrator

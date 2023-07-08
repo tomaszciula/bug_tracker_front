@@ -1,21 +1,17 @@
-import { useEffect, useState } from 'react'
-import useFetch from './useFetch';
-import axios from 'axios';
+import { useEffect, useState } from "react";
 
 const useUser = () => {
-    const [user, setUser] = useState({});
-    useEffect(function effectFunc() {
-        // debugger
-        fetch("http://localhost:8000/user")
-        .then(res => res.json())
-          .then((data) => 
-          {
-            console.log("FETCH: ", data)
-            setUser({data})
-          })
-          .catch((err) => console.log(err))
-      }, []);
-    return user;
-}
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    // debugger
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
+      credentials: 'include',
+    })
+      .then((res) => res.json())
+      .then((user) => setUser(user))
+      .catch((err) => console.log(err));
+  }, []);
+  return user;
+};
 
 export default useUser;
