@@ -1,5 +1,13 @@
 
 const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: '/:path*',
+        destination: 'https://localhost:3000/:path*',
+      },
+    ]
+  },
     images: {
         remotePatterns: [
           {

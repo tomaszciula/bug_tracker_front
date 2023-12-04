@@ -3,28 +3,26 @@ import BugsList from "../Bugs/BugsList";
 import UsersList from "../Users/UsersList";
 import ChatMainView from "../Chat/ChatMainView";
 import Board from "./Board";
+import { useRouter } from "next/navigation";
 
 const Dashboard = (props: any) => {
+  const router = useRouter();
   const renderRightView = (sidebarState: any) => {
     switch (sidebarState) {
       case "dashboard":
-        return (
-          <div className="">
-            <Board />
-          </div>
-        );
+        return <Board />;
       case "projects":
-        return (
-          <div className="">
-            <ProjectsList />
-          </div>
-        );
+        return <ProjectsList />;
       case "bugs":
         return <BugsList />;
       case "messages":
         return <ChatMainView />;
+      // case "todos":
+      //   return <TodoList />;
       case "users":
         return <UsersList />;
+      case "admin":
+        router.push(`${process.env.NEXT_PUBLIC_API_URL}/admin`);
     }
   };
   return (

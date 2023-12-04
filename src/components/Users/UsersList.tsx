@@ -6,6 +6,7 @@ import Users from "./Users";
 const UsersList = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+
   useEffect(function effectFunc() {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`)
       .then((res) => res.json())
@@ -18,7 +19,9 @@ const UsersList = () => {
         setLoading(false);
       });
   }, []);
+
   console.log("users: ", users);
+  
   return (
     <div className="flex flex-col">
       {loading ? <Loading /> : <Users users={users} />}
