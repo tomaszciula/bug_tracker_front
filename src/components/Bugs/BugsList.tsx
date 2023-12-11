@@ -15,23 +15,17 @@ import {
   Typography,
   Option,
 } from "@material-tailwind/react";
+import axios from "axios";
 
 const BugsList = () => {
   const [bugs, setBugs] = useState([{}]);
+  const [newBug, setNewBug] = useState({});
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   // const [projects, setProjects] = useState({});
   const [project, setProject] = useState();
   const [status, setStatus] = useState();
 
-  const handleProject = (e: any) => {
-    setProject(e);
-  };
-  const handleStatus = (e: any) => {
-    setStatus(e);
-  };
-  const handleOpen = () => setOpen((cur) => !cur);
-  // const { data, loading, error } = useFetch(`http://localhost:8000/bugs`);
   useEffect(function effectFunc() {
     fetch(process.env.NEXT_PUBLIC_API_URL + "/bugs")
       .then((res) => res.json())
@@ -45,14 +39,51 @@ const BugsList = () => {
       });
   }, []);
 
+  const handleProject = (e: any) => {
+    setProject(e);
+  };
+  const handleStatus = (e: any) => {
+    setStatus(e);
+  };
+  const handleInputChange = (e: any) => {
+    setNewBug({ ...newBug, [e.target.name]: e.target.value });
+    console.log(e);
+  };
+  const handleOpen = () => setOpen((cur) => !cur);
+
+  const handleSubmit = (e: any) => {
+    console.log("newBug: ", newBug);
+    
+    e.preventDefault();
+    handleOpen();
+    axios.post(process.env.NEXT_PUBLIC_API_URL + "/add/bug", newBug);
+    axios.get(process.env.NEXT_PUBLIC_API_URL + "/bugs").then((res) => {
+      setBugs(res.data);
+    });
+  };
+  // const { data, loading, error } = useFetch(`http://localhost:8000/bugs`);
+
+  // const handleCreateNewBugButtonClick = (e: any) => {
+  //   e.preventDefault();
+  //   try {
+  //     axios
+  //       .post(process.env.NEXT_PUBLIC_API_URL + "/add/bug", newBug)
+  //       handleOpen();
+  //       setBugs(bugs.concat(newBug))
+  //   } catch (err) {
+  //     console.log(err);
+
+  //   }
+  // }
+
   const { data } = useFetch(process.env.NEXT_PUBLIC_API_URL + "/projects");
 
-  console.log("Projects fetch: ", data);
+  // console.log("Projects fetch: ", data);
   return (
     <div className="h-full w-full p-5">
       <Button onClick={handleOpen}>Add new bug</Button>
-
       {loading ? <Loading /> : <Bugs bugs={bugs} />}
+
       <Dialog
         size="xs"
         open={open}
@@ -69,42 +100,62 @@ const BugsList = () => {
               New bug
             </Typography>
           </CardHeader>
-          <CardBody className="flex flex-col gap-4">
-            <Input label="Bug name" size="lg" />
+          <CardBody className="flex flex-col gap-4 overflow-scroll px-0">
+            <Input label="Bug name" size="lg" onChange={handleInputChange} />
 
-            <Textarea label="Description" size="lg" />
-            <Input label="Steps to bug" size="lg" />
-            <Input label="Expected behavior" size="lg" />
-            <Input label="Actuall behavior" size="lg" />
-            <Select onChange={handleProject} label="Project" size="lg">
+            <Textarea
+              label="Description"
+              size="lg"
+              onChange={handleInputChange}
+            />
+            <Input
+              label="Steps to bug"
+              size="lg"
+              onChange={handleInputChange}
+            />
+            <Input
+              label="Expected behavior"
+              size="lg"
+              onChange={handleInputChange}
+            />
+            <Input
+              label="Actuall behavior"
+              size="lg"
+              onChange={handleInputChange}
+            />
+            <Select onChange={handleInputChange} label="Project" size="lg">
               {Array.isArray(data)
                 ? data.map((item) => <Option key={item.id}>{item.name}</Option>)
                 : null}
             </Select>
-            <Select label="Priority" size="lg">
+            <Select label="Priority" size="lg" onChange={handleInputChange}>
               <Option>Low</Option>
               <Option>Medium</Option>
               <Option>High</Option>
             </Select>
-            <Input label="Important" size="lg" />
-            <Select onChange={handleStatus} label="Status" size="lg">
+            <Input label="Important" size="lg" onChange={handleInputChange} />
+            <Select onChange={handleInputChange} label="Status" size="lg">
               <Option>To do</Option>
               <Option>In progress</Option>
               <Option>Testing</Option>
               <Option>Done</Option>
             </Select>
 
-            <Input label="Platform" size="lg" />
-            <Input label="Reported by" size="lg" />
-            <Input label="Responsible" size="lg" />
-            <Textarea label="Comment" size="lg" />
+            <Input label="Platform" size="lg" onChange={handleInputChange} />
+            <Input label="Reported by" size="lg" onChange={handleInputChange} />
+            <Input label="Responsible" size="lg" onChange={handleInputChange} />
+            <Textarea label="Comment" size="lg" onChange={handleInputChange} />
 
             {/* <div className="-ml-2.5">
               <Checkbox label="Remember Me" />
             </div> */}
           </CardBody>
           <CardFooter className="pt-0">
-            <Button variant="gradient" onClick={handleOpen} fullWidth>
+            <Button
+              variant="gradient"
+              onClick={handleSubmit}
+              fullWidth
+            >
               Create new bug
             </Button>
             {/* <Typography variant="small" className="mt-6 flex justify-center">

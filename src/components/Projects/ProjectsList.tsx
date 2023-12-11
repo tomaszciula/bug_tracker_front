@@ -14,6 +14,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import axios from "axios";
+import { useForm } from "react-hook-form";
 
 interface IProject {
   name: string;
@@ -46,27 +47,29 @@ const ProjectsList = () => {
 
   const handleInputChange = (e: any) => {
     setNewProject({ ...newProject, [e.target.name]: e.target.value });
-    console.log(e);
   };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
     handleOpen();
     axios.post(process.env.NEXT_PUBLIC_API_URL + "/add/project", newProject);
-    setProjects(projects.concat(newProject));
+    axios.get(process.env.NEXT_PUBLIC_API_URL + "/projects").then((res) => {
+      setProjects(res.data);
+    });
   };
 
+
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="p-5">
-        <Button onClick={handleOpen}>Add new project</Button>
-        {loading ? <Loading /> : <Projects projects={projects} />}
-        <Dialog
-          size="xs"
-          open={open}
-          handler={handleOpen}
-          className="bg-transparent shadow-none"
-        >
+    <div className="p-5">
+      <Button onClick={handleOpen}>Add new project</Button>
+      {loading ? <Loading /> : <Projects projects={projects} />}
+
+      <Dialog
+        size="xs"
+        open={open}
+        handler={handleOpen}
+        className="bg-transparent shadow-none"
+      >
           <Card className="mx-auto w-full max-w-[24rem]">
             <CardHeader
               variant="gradient"
@@ -93,18 +96,18 @@ const ProjectsList = () => {
             </CardBody>
             <CardFooter className="pt-0">
               <Button
-                // type="submit"
+                type="submit"
+                name="Create new project"
                 variant="gradient"
                 onClick={handleSubmit}
                 fullWidth
               >
-                Create new project
+              Create new project
               </Button>
             </CardFooter>
           </Card>
-        </Dialog>
-      </div>
-    </form>
+      </Dialog>
+    </div>
   );
 };
 
