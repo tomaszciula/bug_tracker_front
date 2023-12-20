@@ -1,7 +1,7 @@
 import { Data } from "@/constants/types";
 
 interface Props {
-  data: Data;
+  data: any;
   handleDragging: (dragging: boolean) => void;
 }
 
@@ -19,7 +19,7 @@ export const CardItem = ({ data, handleDragging }: Props) => {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <p>{data.content}</p>
+      <p className="text-black">{data.title}</p>
       <div className="flex justify-between">
         <span className="text-xs flex items-center">
           <svg

@@ -3,3 +3,8 @@ export enum Role {
     ROLE_ADMIN,
 }
 
+export enum Category {
+    must,
+    should,
+    maybe,
+  }

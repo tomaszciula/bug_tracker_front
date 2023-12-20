@@ -7,7 +7,6 @@ import {
 } from "@heroicons/react/24/outline";
 
 const Bugs = (props: any) => {
-
   console.log("BUGS: ", props.bugs);
 
   const TABLE_HEAD = [
@@ -28,7 +27,7 @@ const Bugs = (props: any) => {
   ];
 
   return (
-    <div className="w-full">
+    <div className="w-full mt-5">
       <Card className="h-full w-full overflow-scroll">
         <table className="w-full min-w-max table-auto text-left mt-4 w-full min-w-max table-auto text-left">
           <thead>
@@ -43,7 +42,7 @@ const Bugs = (props: any) => {
                     color="blue-gray"
                     className="flex font-normal leading-none opacity-70 items-center justify-between gap-2"
                   >
-                    {head}{" "}  
+                    {head}{" "}
                     {index !== TABLE_HEAD.length - 1 && (
                       <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
                     )}
@@ -60,6 +59,7 @@ const Bugs = (props: any) => {
                     variant="small"
                     color="blue-gray"
                     className="font-normal"
+                    name="id"
                   >
                     {bug.id}
                   </Typography>
@@ -69,6 +69,7 @@ const Bugs = (props: any) => {
                     variant="small"
                     color="blue-gray"
                     className="font-normal"
+                    name="date"
                   >
                     {bug.date.timestamp}
                   </Typography>
@@ -78,6 +79,7 @@ const Bugs = (props: any) => {
                     variant="small"
                     color="blue-gray"
                     className="font-normal"
+                    name="title"
                   >
                     {bug.title}
                   </Typography>
@@ -87,6 +89,7 @@ const Bugs = (props: any) => {
                     variant="small"
                     color="blue-gray"
                     className="font-normal"
+                    name="description"
                   >
                     {bug.description}
                   </Typography>
@@ -96,6 +99,7 @@ const Bugs = (props: any) => {
                     variant="small"
                     color="blue-gray"
                     className="font-normal"
+                    name="stepsToBug"
                   >
                     {bug.stepsToBug}
                   </Typography>
@@ -107,6 +111,7 @@ const Bugs = (props: any) => {
                     variant="small"
                     color="blue-gray"
                     className="font-medium"
+                    name="expectedBehavior"
                   >
                     {bug.expectedBehavior}
                   </Typography>
@@ -116,6 +121,7 @@ const Bugs = (props: any) => {
                     variant="small"
                     color="blue-gray"
                     className="font-normal"
+                    name="actuallBehavior"
                   >
                     {bug.actuallBehavior}
                   </Typography>
@@ -125,15 +131,27 @@ const Bugs = (props: any) => {
                     variant="small"
                     color="blue-gray"
                     className="font-normal"
+                    name="project.name"
                   >
                     {bug.project.name}
                   </Typography>
                 </td>
-                <td className="p-4">
+                <td
+                  className={
+                    bug.priority === "low"
+                      ? "p-4 bg-green-400"
+                      : bug.priority === "medium"
+                      ? "p-4 bg-yellow-400"
+                      : bug.priority === "high"
+                      ? "p-4 bg-red-400"
+                      : "p-4"
+                  }
+                >
                   <Typography
                     variant="small"
                     color="blue-gray"
                     className="font-normal"
+                    name="priority"
                   >
                     {bug.priority}
                   </Typography>
@@ -143,6 +161,7 @@ const Bugs = (props: any) => {
                     variant="small"
                     color="blue-gray"
                     className="font-normal"
+                    name="important"
                   >
                     {bug.important}
                   </Typography>
@@ -152,6 +171,7 @@ const Bugs = (props: any) => {
                     variant="small"
                     color="blue-gray"
                     className="font-normal"
+                    name="status"
                   >
                     {bug.status}
                   </Typography>
@@ -161,6 +181,7 @@ const Bugs = (props: any) => {
                     variant="small"
                     color="blue-gray"
                     className="font-normal"
+                    name="environment"
                   >
                     {bug.environment}
                   </Typography>
@@ -170,6 +191,7 @@ const Bugs = (props: any) => {
                     variant="small"
                     color="blue-gray"
                     className="font-normal"
+                    name="reporting"
                   >
                     {bug.reporting}
                   </Typography>
@@ -179,6 +201,7 @@ const Bugs = (props: any) => {
                     variant="small"
                     color="blue-gray"
                     className="font-normal"
+                    name="comment"
                   >
                     {bug.comment}
                   </Typography>

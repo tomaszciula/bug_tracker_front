@@ -6,9 +6,9 @@
     "configurations": [
         {
             "type": "chrome",
-            "request": "launch",
+            "request": "attach",
             "name": "Uruchom przeglądarkę Chrome względem hosta lokalnego",
-            "url": "http://localhost:8080",
+            "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}"
         }
     ]

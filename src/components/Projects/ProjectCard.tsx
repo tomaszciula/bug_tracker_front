@@ -10,21 +10,11 @@ import {
 } from "@material-tailwind/react";
 
 const ProjectCard = (props: any) => {
-  console.log("Project: ", props.project);
+  console.log("Project Object: ", props.project);
 
   return (
     <Card className="max-w-[24rem] overflow-hidden mt-5 mr-5 cursor-pointer">
-      <CardHeader
-        floated={false}
-        shadow={false}
-        color="transparent"
-        className="m-0 rounded-none"
-      >
-        {/* <img
-          src="https://source.unsplash.com/random/500×700/?programming?javascript?bugs"
-          alt="ui/ux review check"
-        /> */}
-      </CardHeader>
+
       <CardBody>
         <Typography variant="h4" color="blue-gray">
           {props.project.name}
@@ -35,7 +25,7 @@ const ProjectCard = (props: any) => {
       </CardBody>
       <CardFooter className="flex h-full">
         <div className="flex items-center ">
-          {props.project.user.length > 0 ? (
+          {props.project && props.project.user.length > 0 ? (
             <>
               <Typography className="font-normal">
                 {`${props.project.user.length}`} uczestników

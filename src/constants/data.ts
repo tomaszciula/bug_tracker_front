@@ -3,42 +3,50 @@ import { Data } from "./types";
 export const data: Data[] = [
   {
     id: 1,
-    content: "Aqua-man",
+    title: "Aqua-man",
     status: "To do",
+    project:"1"
   },
   {
     id: 2,
-    content: "Flash",
+    title: "Flash",
     status: "In progress",
+    project:"1"
   },
   {
     id: 3,
-    content: "Green Lantern",
+    title: "Green Lantern",
     status: "Done",
+    project:"1"
   },
   {
     id: 4,
-    content: "Batman",
+    title: "Batman",
     status: "To do",
+    project:"1"
   },
   {
     id: 5,
-    content: "Aqua-man",
+    title: "Aqua-man",
     status: "To do",
+    project:"1"
   },
   {
     id: 6,
-    content: "Flash",
+    title: "Flash",
     status: "In progress",
+    project:"1"
   },
   {
     id: 7,
-    content: "Green Lantern",
+    title: "Green Lantern",
     status: "Testing",
+    project:"1"
   },
   {
     id: 8,
-    content: "Batman",
+    title: "Batman",
     status: "To do",
+    project:"1"
   },
 ];

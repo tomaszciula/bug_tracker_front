@@ -2,13 +2,13 @@ import { BoardColumns, Data } from "@/constants/types";
 import { CardItem } from "./CardItem";
 
 interface Props {
-  items: Data[];
+  items: [];
   status: BoardColumns;
   isDragging: boolean;
   handleUpdateList: (id: number, status: BoardColumns) => void;
   handleDragging: (dragging: boolean) => void;
 }
-const columns = ["To do", "In progress", "Testing"];
+// const columns = ["To do", "In progress", "Testing"];
 
 export const ContainerCards = ({
   items = [],
@@ -19,6 +19,8 @@ export const ContainerCards = ({
 }: Props) => {
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
+    console.log("Przed handleUpdateList: ", e.dataTransfer);
+    
     handleUpdateList(+e.dataTransfer.getData("text"), status);
     handleDragging(false);
   };
@@ -34,7 +36,7 @@ export const ContainerCards = ({
     >
       <p className="w-full h-7 text-center border-b-2">{status}</p>
       {items.map(
-        (item) =>
+        (item: any) =>
           status === item.status && (
             <CardItem
               data={item}

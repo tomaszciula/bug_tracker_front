@@ -15,10 +15,12 @@ import {
 } from "@material-tailwind/react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import useUser from "@/hooks/useUser";
 
 interface IProject {
   name: string;
   description: string;
+  // user: Object;
 }
 
 const ProjectsList = () => {
@@ -26,6 +28,7 @@ const ProjectsList = () => {
   const [newProject, setNewProject] = useState<IProject>({
     name: "",
     description: "",
+    // user: {},
   });
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
@@ -45,24 +48,42 @@ const ProjectsList = () => {
       });
   }, []);
 
+  useEffect(() => {
+    console.log("useEffect ran, newProject state is: ", newProject);
+    console.log("useEffect ran, USER is: ", user);
+  }, [newProject]);
+
   const handleInputChange = (e: any) => {
     setNewProject({ ...newProject, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    setNewProject(Object.assign(newProject, {user: user}));
     handleOpen();
+    console.log("Nowy projekt przed AXIOS: ", newProject);
+    
     axios.post(process.env.NEXT_PUBLIC_API_URL + "/add/project", newProject);
     axios.get(process.env.NEXT_PUBLIC_API_URL + "/projects").then((res) => {
       setProjects(res.data);
     });
   };
 
+  const user = useUser();
 
   return (
     <div className="p-5">
       <Button onClick={handleOpen}>Add new project</Button>
-      {loading ? <Loading /> : <Projects projects={projects} />}
+
+      {loading ? (
+        <Loading />
+      ) : projects.length === 0 ? (
+        <Typography variant="h5" className="mt-5 ml-2">
+          No projects yet
+        </Typography>
+      ) : (
+        <Projects projects={projects} />
+      )}
 
       <Dialog
         size="xs"
@@ -70,42 +91,42 @@ const ProjectsList = () => {
         handler={handleOpen}
         className="bg-transparent shadow-none"
       >
-          <Card className="mx-auto w-full max-w-[24rem]">
-            <CardHeader
+        <Card className="mx-auto w-full max-w-[24rem]">
+          <CardHeader
+            variant="gradient"
+            color="blue"
+            className="mb-4 grid h-28 place-items-center"
+          >
+            <Typography variant="h3" color="white">
+              New project
+            </Typography>
+          </CardHeader>
+          <CardBody className="flex flex-col gap-4">
+            <Input
+              name="name"
+              label="Name"
+              size="lg"
+              onChange={handleInputChange}
+            />
+            <Textarea
+              name="description"
+              label="Description"
+              size="lg"
+              onChange={handleInputChange}
+            />
+          </CardBody>
+          <CardFooter className="pt-0">
+            <Button
+              type="submit"
+              name="Create new project"
               variant="gradient"
-              color="blue"
-              className="mb-4 grid h-28 place-items-center"
+              onClick={handleSubmit}
+              fullWidth
             >
-              <Typography variant="h3" color="white">
-                New project
-              </Typography>
-            </CardHeader>
-            <CardBody className="flex flex-col gap-4">
-              <Input
-                name="name"
-                label="Name"
-                size="lg"
-                onChange={handleInputChange}
-              />
-              <Textarea
-                name="description"
-                label="Description"
-                size="lg"
-                onChange={handleInputChange}
-              />
-            </CardBody>
-            <CardFooter className="pt-0">
-              <Button
-                type="submit"
-                name="Create new project"
-                variant="gradient"
-                onClick={handleSubmit}
-                fullWidth
-              >
               Create new project
-              </Button>
-            </CardFooter>
-          </Card>
+            </Button>
+          </CardFooter>
+        </Card>
       </Dialog>
     </div>
   );

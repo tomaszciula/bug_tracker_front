@@ -5,6 +5,7 @@ import {
   TabsBody,
   Tab,
   TabPanel,
+  Typography,
 } from "@material-tailwind/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -12,23 +13,26 @@ import { DragAndDrop } from "./DragAndDrop";
 
 const Board = (props: any) => {
   const [projects, setProjects] = useState([]);
-  const [value, setValue] = useState("");
+  const [projectTabValue, setProjectTabValue] = useState("");
+  
+
   useEffect(() => {
     axios
       .get(`${process.env.NEXT_PUBLIC_API_URL}/projects`)
       .then((res) => {
         console.log("res data: ", res.data);
-        // setValue(res.data[0].name);
+        setProjectTabValue(res.data[0].name);
         setProjects(res.data);
-        console.log("value: ", value);
+        console.log("value: ", projectTabValue);
       })
       .catch((err) => console.log(err));
-  }, [value]);
+  }, []);
 
   // const { data } = useFetch(`${process.env.NEXT_PUBLIC_API_URL}/projects`);
   return (
     <div>
-      <Tabs value="Bug Tracker">
+      {/* <Tabs value={projectTabValue.length === 0 ? (<Typography>No projects yet</Typography>) : projectTabValue[0].name}> */}
+      <Tabs value={projectTabValue} key={projectTabValue}>
         <TabsHeader>
           {projects.map(({ name }) => (
             // <Tab id={name} key={name} value={name} onClick={e => console.log("on select: ", e)
@@ -36,21 +40,21 @@ const Board = (props: any) => {
               id={name}
               key={name}
               value={name}
-              onClick={() => setValue(name)}
+              onClick={() => setProjectTabValue(name)}
             >
               {name}
             </Tab>
           ))}
         </TabsHeader>
-        {/* <TabsBody>
+        <TabsBody>
     {projects.map(({ value, desc }) => (
       <TabPanel key={value} value={value}>
         {desc}
       </TabPanel>
     ))}
-  </TabsBody> */}
+  </TabsBody>
       </Tabs>
-      <DragAndDrop />
+      <DragAndDrop tabValue={projectTabValue}/>
     </div>
   );
 };
