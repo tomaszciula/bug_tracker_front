@@ -1,3 +1,5 @@
+import { Category } from "./enums";
+
 export type BoardColumns = "To do" | "In progress" | "Testing" | "Done";
 export interface Data {
   id: number;
@@ -19,7 +21,9 @@ export interface IState {
   activeTab: string;
 }
 export interface INote {
-  id: number;
+  id: string;
   title: string;
   content: string;
+  notes: [];
+  setNotes: Function;
 }

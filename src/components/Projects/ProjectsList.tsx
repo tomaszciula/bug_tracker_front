@@ -14,7 +14,6 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import axios from "axios";
-import { useForm } from "react-hook-form";
 import useUser from "@/hooks/useUser";
 
 interface IProject {
@@ -34,6 +33,7 @@ const ProjectsList = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen((cur) => !cur);
   const router = useRouter();
+  const user = useUser();
 
   useEffect(function effectFunc() {
     fetch(process.env.NEXT_PUBLIC_API_URL + "/projects")
@@ -51,7 +51,7 @@ const ProjectsList = () => {
   useEffect(() => {
     console.log("useEffect ran, newProject state is: ", newProject);
     console.log("useEffect ran, USER is: ", user);
-  }, [newProject]);
+  }, [newProject, projects, user]);
 
   const handleInputChange = (e: any) => {
     setNewProject({ ...newProject, [e.target.name]: e.target.value });
@@ -59,17 +59,15 @@ const ProjectsList = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    setNewProject(Object.assign(newProject, {user: user}));
+    setNewProject(Object.assign(newProject, { user: user }));
     handleOpen();
     console.log("Nowy projekt przed AXIOS: ", newProject);
-    
+
     axios.post(process.env.NEXT_PUBLIC_API_URL + "/add/project", newProject);
     axios.get(process.env.NEXT_PUBLIC_API_URL + "/projects").then((res) => {
       setProjects(res.data);
     });
   };
-
-  const user = useUser();
 
   return (
     <div className="p-5">

@@ -24,6 +24,10 @@ const UsersList = () => {
 
   console.log("users xxx: ", users[0]);
 
+  useEffect(() => {
+    console.log("users: ", users);
+  }, [users])
+
   return (
     <div className="flex flex-col">
       {loading ? (
@@ -34,7 +38,7 @@ const UsersList = () => {
         </Typography>
       ) : (
         <List>
-        <Users users={users[0]} />
+        <Users users={users} />
         </List>
       )}
     </div>

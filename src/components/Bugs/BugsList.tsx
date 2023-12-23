@@ -63,6 +63,10 @@ const BugsList = () => {
     console.log("useEffect ran, newBug state is: ", newBug);
   }, [newBug]);
 
+  useEffect(() => {
+    console.log("useEffect ran, bugs state is: ", bugs);
+  }, [bugs]);
+
   // const handleProjectCheckbox = (e: any) => {
   //   console.log("project checkbox: ", e);
   //   if (e.target.checked) {
@@ -77,7 +81,7 @@ const BugsList = () => {
   const handleProject = (e: any) => {
     setProject(e);
     setNewBug({ ...newBug, project: e });
-  }
+  };
 
   const handlePriority = (e: any) => {
     console.log("priority: ", e);
@@ -102,7 +106,7 @@ const BugsList = () => {
     console.log("newBug: ", newBug);
     e.preventDefault();
     handleOpen();
-    axios.post(process.env.NEXT_PUBLIC_API_URL + "/add/bug", newBug);
+    axios.post(process.env.NEXT_PUBLIC_API_URL + "/add/bug", newBug),
     axios.get(process.env.NEXT_PUBLIC_API_URL + "/bugs").then((res) => {
       setBugs(res.data);
     });
@@ -173,11 +177,19 @@ const BugsList = () => {
               size="lg"
               onChange={handleInputChange}
             />
-            <Select name="project" value={project} label="Project" size="lg" onChange={handleProject}>
+            <Select
+              name="project"
+              value={project}
+              label="Project"
+              size="lg"
+              onChange={handleProject}
+            >
               {Array.isArray(data)
                 ? data.map((item) => (
-                    <Option key={item.id} value={item.name}>{item.name}</Option>)
-                  )
+                    <Option key={item.id} value={item.name}>
+                      {item.name}
+                    </Option>
+                  ))
                 : null}
             </Select>
             <Select
