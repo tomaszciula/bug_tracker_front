@@ -10,11 +10,9 @@ import {
 } from "@material-tailwind/react";
 
 const ProjectCard = (props: any) => {
-  console.log("Project Object: ", props.project);
 
   return (
-    <Card className="max-w-[24rem] overflow-hidden mt-5 mr-5 cursor-pointer">
-
+    <Card className="max-w-[24rem] overflow-hidden mt-5 mr-5 cursor-pointer bg-[#50d701]">
       <CardBody>
         <Typography variant="h4" color="blue-gray">
           {props.project.name}

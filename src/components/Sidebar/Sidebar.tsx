@@ -1,3 +1,4 @@
+import { capitalize } from "@/functions/capitalize";
 import useUser from "@/hooks/useUser";
 import {
   Button,
@@ -5,6 +6,7 @@ import {
   DialogHeader,
   DialogBody,
   DialogFooter,
+  Typography,
 } from "@material-tailwind/react";
 import axios from "axios";
 import Image from "next/image";
@@ -13,18 +15,12 @@ import React, { useState } from "react";
 const Sidebar = (props: { setSidebarState: (arg0: string) => void }) => {
   const [open, setOpen] = useState(false);
   const user = useUser();
-  console.log("USER: ", user);
-  // async function getUser() {
-  //   const user1 = await fetch(`${process.env.API_URL}/user`)
-  // console.log("user1: ", user1)
-  // }
-  // getUser()
+
   const handleOpen = () => setOpen(!open);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     axios(process.env.NEXT_PUBLIC_API_URL + "/logout").then((res) => {
-      console.log("logout: ", res);
     });
   };
 
@@ -36,7 +32,6 @@ const Sidebar = (props: { setSidebarState: (arg0: string) => void }) => {
         x-data="{ sidenav: true }"
       >
         <button
-          //   @click="sidenav = true"
           className="p-2 border-2 bg-white rounded-md border-gray-200 shadow-lg text-gray-500 focus:bg-teal-500 focus:outline-none focus:text-white absolute top-0 left-0 sm:hidden"
         >
           <svg
@@ -56,7 +51,6 @@ const Sidebar = (props: { setSidebarState: (arg0: string) => void }) => {
           id="sidebar"
           className="bg-white h-screen md:block shadow-xl px-3 w-30 md:w-60 lg:w-60 overflow-x-hidden transition-transform duration-300 ease-in-out"
           x-show="sidenav"
-          //   @click.away="sidenav = false"
         >
           <div className="space-y-6 md:space-y-10 mt-10">
             <h1 className="font-bold text-4xl text-center md:hidden">
@@ -66,20 +60,24 @@ const Sidebar = (props: { setSidebarState: (arg0: string) => void }) => {
               Bug Tracker<span className="text-teal-600">.</span>
             </h1>
             <div id="profile" className="space-y-3">
-              <Image
-                src="https://images.unsplash.com/photo-1628157588553-5eeea00af15c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
-                alt="Avatar user"
-                className="w-10 md:w-16 rounded-full mx-auto"
-                width={50}
-                height={50}
-                priority={true}
-              />
+              {user ? (
+                <div className="flex w-20 h-20 rounded-full mx-auto bg-teal-500 text-white font-bold text-5xl">
+                  <p className="my-auto mx-auto font-mono">
+                    {/* @ts-ignore */}
+                    {user.firstname !== undefined
+                      ? capitalize(user.firstname) + capitalize(user.lastname)
+                      : null}
+                  </p>
+                </div>
+              ) : null}{" "}
               <div>
                 <h2 className="font-medium text-xs md:text-sm text-center text-teal-500">
-                  {user ? user.firstname + " " + user.lastname : null}{" "}
+                  {user.firstname !== undefined
+                    ? user.firstname + " " + user.lastname
+                    : null}
                 </h2>
                 <p className="text-xs text-gray-500 text-center">
-                  {user?.position}
+                  {user !== undefined ? user.position : null}
                 </p>
               </div>
             </div>
@@ -171,25 +169,6 @@ const Sidebar = (props: { setSidebarState: (arg0: string) => void }) => {
                 </svg>
                 <span className="">Messages</span>
               </div>
-              {/* <a
-                onClick={() => props.setSidebarState("calendar")}
-                // href=""
-                className="text-sm font-medium text-gray-700 py-2 px-2 hover:bg-teal-500 hover:text-white hover:scale-105 rounded-md transition duration-150 ease-in-out cursor-pointer"
-              >
-                <svg
-                  className="w-6 h-6 fill-current inline-block"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-                <span className="">Calendar</span>
-              </a> */}
               <div
                 onClick={() => props.setSidebarState("todos")}
                 // href=""
