@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import MyCalendar from "../Calendar/MyCalendar";
 import TodosMainView from "../Todos/TodosMainView";
 import NotesMainView from "../Notes/NotesMainView";
+import StatsMainView from "../Stats/StatsMainView";
 
 const Dashboard = (props: any) => {
   const router = useRouter();
@@ -26,6 +27,8 @@ const Dashboard = (props: any) => {
         return <NotesMainView />;
       case "todos":
         return <TodosMainView />;
+      case "stats":
+        return <StatsMainView />;
       case "users":
         return <UsersList />;
       case "admin":

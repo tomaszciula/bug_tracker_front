@@ -1,35 +1,77 @@
-import {
-  List,
-  ListItem,
-  ListItemSuffix,
-  Card,
-  IconButton,
-} from "@material-tailwind/react";
+import { ListItem, ListItemSuffix, IconButton } from "@material-tailwind/react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-function TrashIcon() {
+const TrashIcon = (props: any) => {
+  const handleTodoDelete = () => {
+    axios
+      .delete(process.env.NEXT_PUBLIC_API_URL + `/delete/todo/${props.id}`)
+      .then((res) => {
+        axios.get(process.env.NEXT_PUBLIC_API_URL + `/todos`).then((res) => {
+          props.setTodos(res.data);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      className="h-5 w-5"
-    >
-      <path
-        fillRule="evenodd"
-        d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
-        clipRule="evenodd"
-      />
-    </svg>
+    <div onClick={handleTodoDelete}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        className="h-5 w-5"
+      >
+        <path
+          fillRule="evenodd"
+          d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
+          clipRule="evenodd"
+        />
+      </svg>
+    </div>
   );
-}
+};
 
 const Todo = (props: any) => {
+  const [todo, setTodo] = useState({
+    id: props.id,
+    text: props.text,
+    done: props.done,
+  });
+  const [done, setDone] = useState(props.done);
+  const isDone = done ? "line-through text-gray-400" : "";
+
+  const handleTodoClick = (e: any) => {
+    setDone(!done);
+    setTodo({ ...todo, done: !done });
+    console.log("Aktualne todo: ", todo);
+    // axios.put("/api/todo", todo).then(
+    //   (response) => {
+    //     console.log("Todo updated: ", response);
+    //   }
+    // );
+  };
+
+  useEffect(() => {
+    console.log("Todo: ", todo);
+  }, [todo])
+
   return (
-    <ListItem ripple={false} className="py-1 pr-1 pl-4">
+    <ListItem
+      ripple={false}
+      className={`py-1 pr-1 pl-4 ${isDone}`}
+      onClick={handleTodoClick}
+    >
       {props.text}
       <ListItemSuffix>
         <IconButton variant="text" color="blue-gray">
-          <TrashIcon />
+          <TrashIcon
+            todos={props.todos}
+            setTodos={props.setTodos}
+            id={props.id}
+          />
         </IconButton>
       </ListItemSuffix>
     </ListItem>

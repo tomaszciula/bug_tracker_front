@@ -71,7 +71,7 @@ const Bugs = (props: any) => {
                     className="font-normal"
                     name="date"
                   >
-                    {bug.date.timestamp}
+                    {new Date(bug.date.timestamp * 1000).toLocaleDateString()}
                   </Typography>
                 </td>
                 <td className="p-4">

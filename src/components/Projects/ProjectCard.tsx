@@ -12,7 +12,7 @@ import {
 const ProjectCard = (props: any) => {
 
   return (
-    <Card className="max-w-[24rem] overflow-hidden mt-5 mr-5 cursor-pointer bg-[#50d701]">
+    <Card className={`max-w-[24rem] overflow-hidden mt-5 mr-5 cursor-pointer first-of-type:bg-green-200 odd:bg-cyan-200 even:bg-lime-200 last-of-type:bg-red-200`}>
       <CardBody>
         <Typography variant="h4" color="blue-gray">
           {props.project.name}

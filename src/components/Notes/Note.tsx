@@ -5,6 +5,7 @@ import axios from "axios";
 import { useEffect } from "react";
 
 const Note: React.FC<INote> = ({ id, title, content, notes, setNotes }) => {
+  
   const handleNoteDelete = () => {
     console.log("handle DELETE note e: ", id);
     console.log(process.env.NEXT_PUBLIC_API_URL + `/delete/note/${id}`);

@@ -10,6 +10,9 @@ const Todos = (props: any) => {
                 key={todo.id}
                 id={todo.id}
                 text={todo.text}
+                done={todo.done}
+                todos={props.list}
+                setTodos={props.setTodos}
               />
             );
           })

@@ -65,7 +65,7 @@ const TodosMainView = () => {
   };
 
   const handleImportant = (e: any) => {
-    setImportant(e.target.id);
+    setImportant(e);
   };
 
   const handleSubmit = (e: any) => {
@@ -77,7 +77,6 @@ const TodosMainView = () => {
     // setNewTodo({...newTodo, user_id: user_id});
     // setNewTodo({...newTodo, important: important});
     handleOpen();
-    console.log("Nowa notatka przed AXIOS: ", newTodo);
     axios.post(process.env.NEXT_PUBLIC_API_URL + "/add/todo", newTodo);
     axios.get(process.env.NEXT_PUBLIC_API_URL + "/todos").then((res) => {
       setTodos(res.data);
@@ -88,8 +87,6 @@ const TodosMainView = () => {
     axios
       .get(process.env.NEXT_PUBLIC_API_URL + "/todos")
       .then((res) => {
-        console.log("TODOS: ", res.data);
-
         setTodos(res.data);
         setLoading(false);
       })
@@ -152,7 +149,12 @@ const TodosMainView = () => {
         ) : (
           <Card className="w-full">
             <List>
-              <Todos tab={activeTab} todos={filteredTodos} />
+              <Todos
+                tab={activeTab}
+                todos={filteredTodos}
+                list={todos}
+                setTodos={setTodos}
+              />
             </List>
           </Card>
         )}

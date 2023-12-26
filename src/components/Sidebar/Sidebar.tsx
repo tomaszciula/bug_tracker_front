@@ -10,18 +10,27 @@ import {
 } from "@material-tailwind/react";
 import axios from "axios";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const Sidebar = (props: { setSidebarState: (arg0: string) => void }) => {
   const [open, setOpen] = useState(false);
   const user = useUser();
+  const router = useRouter();
+console.log("USER: ", user);
 
   const handleOpen = () => setOpen(!open);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    axios(process.env.NEXT_PUBLIC_API_URL + "/logout").then((res) => {
-    });
+    // localStorage.removeItem("token");
+    axios(process.env.NEXT_PUBLIC_API_URL + "/logout")
+      .then((res) => {
+        console.log("You have been logged out successfully!");
+        router.push(`${process.env.NEXT_PUBLIC_API_URL}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -31,9 +40,7 @@ const Sidebar = (props: { setSidebarState: (arg0: string) => void }) => {
         className="h-full flex flex-row sticky top-0"
         x-data="{ sidenav: true }"
       >
-        <button
-          className="p-2 border-2 bg-white rounded-md border-gray-200 shadow-lg text-gray-500 focus:bg-teal-500 focus:outline-none focus:text-white absolute top-0 left-0 sm:hidden"
-        >
+        <button className="p-2 border-2 bg-white rounded-md border-gray-200 shadow-lg text-gray-500 focus:bg-teal-500 focus:outline-none focus:text-white absolute top-0 left-0 sm:hidden">
           <svg
             className="w-5 h-5 fill-current"
             fill="currentColor"
