@@ -1,11 +1,13 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 
 const useUser = () => {
   const [user, setUser] = useState({});
   useEffect(() => {
-    // debugger
+    // axios(process.env.NEXT_PUBLIC_API_URL + "/user")
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
-      credentials: 'include',
+      // mode: "no-cors",
+      credentials: "include",
     })
       .then((res) => res.json())
       .then((user) => setUser(user))

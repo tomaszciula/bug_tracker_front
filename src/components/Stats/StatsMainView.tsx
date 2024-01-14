@@ -12,6 +12,7 @@ import {
   YAxis,
   Pie,
   PieChart,
+  Cell,
 } from "recharts";
 
 const StatsMainView = () => {
@@ -63,6 +64,34 @@ const StatsMainView = () => {
       .catch((err) => {});
   }, []);
 
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+  const RADIAN = Math.PI / 180;
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+    index,
+  }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > cx ? "start" : "end"}
+        dominantBaseline="central"
+      >
+        {`${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
+
   // x-projekty y-ilość błędów w projekcie
   const chart1 = () => {
     const data = new Array();
@@ -95,7 +124,7 @@ const StatsMainView = () => {
     });
     return data;
   };
-
+  // ilość błędów ze względu na status
   const chart3 = () => {
     let data = new Array();
     bugs.forEach((bug) => {
@@ -149,7 +178,7 @@ const StatsMainView = () => {
     // 	<Notes notes={notes} setNotes={setNotes}/>
     //   )}
     // <ResponsiveContainer width="100%" height="100%">
-    
+
     <div className="flex flex-wrap w-full h-full">
       <BarChart
         width={600}
@@ -167,7 +196,7 @@ const StatsMainView = () => {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="uv" fill="#4d8" />
+        <Bar name="Ilość błędów w projekcie" dataKey="uv" fill="#4a8" />
       </BarChart>
       <BarChart
         width={600}
@@ -185,9 +214,27 @@ const StatsMainView = () => {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="uv" fill="#8884d8" />
+        <Bar name="Ilość uczestników w projekcie" dataKey="uv" fill="#8884d8" />
       </BarChart>
-      <PieChart width={600} height={300}>
+      <PieChart width={600} height={200}>
+        <Tooltip />
+        <Pie
+          data={chart3()}
+          cx="50%"
+          cy="50%"
+          labelLine={false}
+          label={renderCustomizedLabel}
+          outerRadius={80}
+          fill="#8884d8"
+          dataKey="value"
+        >
+          {chart3().map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          ))}
+        </Pie>
+        <Legend name="Ilość błędów ze względu na status" />
+      </PieChart>
+      {/* <PieChart width={600} height={300}>
         <Pie
           dataKey="value"
           startAngle={180}
@@ -199,7 +246,7 @@ const StatsMainView = () => {
           fill="#8884d8"
           label
         />
-      </PieChart>
+      </PieChart> */}
     </div>
     // {/* </ResponsiveContainer> */}
   );

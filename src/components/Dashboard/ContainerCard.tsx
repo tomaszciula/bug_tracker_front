@@ -1,5 +1,6 @@
 import { BoardColumns, Data } from "@/constants/types";
 import { CardItem } from "./CardItem";
+import axios from "axios";
 
 interface Props {
   items: [];
@@ -19,9 +20,16 @@ export const ContainerCards = ({
 }: Props) => {
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    console.log("Przed handleUpdateList: ", e.dataTransfer);
-    
+    console.log(
+      "Przed handleUpdateList XXX: ",
+      +e.dataTransfer.getData("text")
+    );
+
     handleUpdateList(+e.dataTransfer.getData("text"), status);
+    axios.put(process.env.NEXT_PUBLIC_API_URL + "/bug/update/status", {
+      id: e.dataTransfer.getData("text"),
+      status: status,
+    });
     handleDragging(false);
   };
 

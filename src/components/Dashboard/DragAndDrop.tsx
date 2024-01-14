@@ -52,7 +52,7 @@ export const DragAndDrop = (props: any) => {
 
   useEffect(() => {
     setFilteredData(() => filteredBugsByProject(bugs));
-  }, [props.tabValue]);
+  }, [bugs, props.tabValue]);
 
   const { isDragging, listItems, handleDragging, handleUpdateList } =
     useDragAndDrop(filteredData);

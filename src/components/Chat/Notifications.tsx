@@ -1,20 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Pusher from "pusher-js";
 import Head from "next/head";
 import { Button, Input } from "@material-tailwind/react";
 import useUser from "@/hooks/useUser";
 
+type TUser = {
+  firstname: string;
+  lastname: string;
+};
+
 const Notifications = () => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [username, setUsername] = useState("");
-  const allMessages: any = [];
-  const user = useUser();
+  // const allMessages = localStorage.getItem("messages");
+  const allMessages: any = useMemo(() => [], []);
+  const logged = useUser();
+  const user = logged as TUser;
 
   useEffect(() => {
     console.log("User in Notifications: ", user);
     setUsername(`${user?.firstname} ${user?.lastname}`);
-  });
+  }, [user]);
 
   useEffect(() => {
     // Pusher.logToConsole = true;
@@ -25,15 +32,21 @@ const Notifications = () => {
       `${process.env.NEXT_PUBLIC_PUSHER_CHANNEL}`
     );
     channel.bind(`${process.env.NEXT_PUBLIC_PUSHER_EVENT}`, (data: any) => {
-      allMessages.push(data);
-      setMessages(allMessages);
+      // allMessages.push(data);
+      // localStorage.setItem("messages", JSON.stringify(data))
+      // const obj: any = JSON.stringify(localStorage.getItem("messages"));
+      // setMessages(allMessages);
+      // @ts-ignore
+      setMessages((prev) => [...prev, data]);
+      console.log("data w useEffect pusher: ", data);
     });
     return () => {
-      pusher.unsubscribe(`${process.env.NEXT_PUBLIC_PUSHER_CHANNEL}`);
+      pusher.disconnect();
+      // pusher.unsubscribe(`${process.env.NEXT_PUBLIC_PUSHER_CHANNEL}`);
     };
-  }, [allMessages, messages]);
+  }, []);
 
-  const sendMessage = async (e) => {
+  const sendMessage = async (e: any) => {
     console.log(e);
     e.preventDefault();
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/chat`, {
@@ -46,13 +59,15 @@ const Notifications = () => {
       }),
     });
     setMessage("");
-    allMessages.push({ username: username, message: message });
-    setMessages(allMessages);
+    // allMessages.push({ username: username, message: message });
+    // localStorage.setItem("messages", JSON.stringify(allMessages));
+    // setMessages(allMessages);
+    // setMessages((prevMessages) => [...prevMessages, { username, message }]);
   };
 
-  // useEffect(() => {
-  //   console.log("Messages: ", messages);
-  // }, [messages]);
+  useEffect(() => {
+    console.log("Messages: ", messages);
+  }, [messages]);
 
   return (
     <div className="h-full relative">
@@ -84,10 +99,23 @@ const Notifications = () => {
                 | null
                 | undefined;
             }) => (
-              <div key={message.id} className="flex flex-row items-center">
-                <div className="flex items-center justify-center h-10 w-auto rounded-xl px-2 bg-teal-500 text-white flex-shrink-0">
-                  {message.username}
-                </div>
+              <div
+                key={message.id}
+                className={
+                  message.username === `${user.firstname} ${user.lastname}`
+                    ? "w-full flex flex-row items-center"
+                    : "w-full flex flex-row items-center justify-end"
+                }
+              >
+                {message.username === `${user.firstname} ${user.lastname}` ? (
+                  <div className="flex items-center justify-center h-10 w-auto rounded-xl px-2 bg-teal-500 text-white flex-shrink-0">
+                    {message.username}
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center h-10 w-auto rounded-xl px-2 bg-blue-500 text-white flex-shrink-0">
+                    {message.username}
+                  </div>
+                )}
                 <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
                   <div>{message.message}</div>
                 </div>

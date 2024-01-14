@@ -1,5 +1,4 @@
 import { BoardColumns, Data } from "@/constants/types";
-import axios from "axios";
 import { useEffect, useState } from "react";
 
 // export const useDragAndDrop = (initialState: Data[]) => {
@@ -15,7 +14,7 @@ export const useDragAndDrop = (initialState: any) => {
   useEffect(() => {
     console.log("Ze środka useEffect useDragAndDrop - listItems: ", listItems);
     setListItems(initialState);
-  }, [listItems])
+  }, [initialState, listItems])
 
   const handleUpdateList = (id: number, status: BoardColumns) => {
     console.log("Ze środka handleUpdateList: ", id, status);

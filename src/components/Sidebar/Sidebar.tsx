@@ -13,11 +13,24 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
+type TUser = {
+  firstname: string;
+  lastname: string;
+  position: string;
+}
+
 const Sidebar = (props: { setSidebarState: (arg0: string) => void }) => {
+  // debugger
   const [open, setOpen] = useState(false);
-  const user = useUser();
+  const logged = useUser();
+  const user = logged as TUser;
+  // const user = {
+  //   firstname: "Tomasz",
+  //   lastname: "Ciuła",
+  //   position: "Project Manager",
+  // };
   const router = useRouter();
-console.log("USER: ", user);
+  console.log("USER: ", user);
 
   const handleOpen = () => setOpen(!open);
 
@@ -33,9 +46,21 @@ console.log("USER: ", user);
       });
   };
 
+  // function getUser() {
+  //   let user;
+  //   axios(process.env.NEXT_PUBLIC_API_URL + "/user")
+  //     .then((res) => res.data)
+  //     .then((returnedUser) => {
+  //       user = returnedUser;
+  //     })
+  //     .catch((err) => console.log(err));
+  //   return user;
+  // }
+
+  // const user = () => getUser();
+
   return (
-    <>
-      <div
+    <div
         id="view"
         className="h-full flex flex-row sticky top-0"
         x-data="{ sidenav: true }"
@@ -71,7 +96,7 @@ console.log("USER: ", user);
                 <div className="flex w-20 h-20 rounded-full mx-auto bg-teal-500 text-white font-bold text-5xl">
                   <p className="my-auto mx-auto font-mono">
                     {/* @ts-ignore */}
-                    {user.firstname !== undefined
+                    {user.firstname !== undefined || null
                       ? capitalize(user.firstname) + capitalize(user.lastname)
                       : null}
                   </p>
@@ -300,7 +325,6 @@ console.log("USER: ", user);
           </Dialog>
         </>
       </div>
-    </>
   );
 };
 
