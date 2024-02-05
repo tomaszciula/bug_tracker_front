@@ -14,7 +14,6 @@ import {
 } from "@material-tailwind/react";
 import useUser from "@/hooks/useUser";
 import Loading from "../Loading";
-import { truncate } from "fs/promises";
 
 const NotesMainView = () => {
   const [notes, setNotes] = useState([]);

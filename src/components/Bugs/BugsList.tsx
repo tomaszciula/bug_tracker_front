@@ -67,17 +67,6 @@ const BugsList = () => {
     console.log("useEffect ran, bugs state is: ", bugs);
   }, [bugs]);
 
-  // const handleProjectCheckbox = (e: any) => {
-  //   console.log("project checkbox: ", e);
-  //   if (e.target.checked) {
-  //     setCheckedProjects(checkedProjects.concat(e.target.id));
-  //   } else if (e.target.checked === false) {
-  //     setCheckedProjects(
-  //       checkedProjects.filter((item) => item !== e.target.id)
-  //     );
-  //   }
-  //   console.log("project checkbox state: ", checkedProjects);
-  // };
   const handleProject = (e: any) => {
     setProject(e);
     setNewBug({ ...newBug, project: e });
@@ -260,28 +249,11 @@ const BugsList = () => {
               size="lg"
               onChange={handleInputChange}
             />
-
-            {/* <div className="-ml-2.5">
-              <Checkbox label="Remember Me" />
-            </div> */}
           </CardBody>
           <CardFooter className="pt-0">
             <Button variant="gradient" onClick={handleSubmit} fullWidth>
               Create new bug
             </Button>
-            {/* <Typography variant="small" className="mt-6 flex justify-center">
-              Don&apos;t have an account?
-              <Typography
-                as="a"
-                href="#signup"
-                variant="small"
-                color="blue"
-                className="ml-1 font-bold"
-                onClick={handleOpen}
-              >
-                Sign up
-              </Typography>
-            </Typography> */}
           </CardFooter>
         </Card>
       </Dialog>

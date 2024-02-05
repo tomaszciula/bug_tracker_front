@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import axios from "axios";
-import { Children, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { DragAndDrop } from "./DragAndDrop";
 
 const Board = (props: any) => {
